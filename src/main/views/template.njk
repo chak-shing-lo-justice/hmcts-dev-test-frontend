@@ -1,7 +1,24 @@
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
 {% extends "govuk/template.njk" %}
 
 {% block head %}
   {% include "webpack/css.njk" %}
+{% endblock %}
+
+{% block content %}
+  {% if errorMsg %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        {
+          text: errorMsg,
+          href: errorHref
+        }
+      ]
+    }) }}
+  {% endif %}
+  {% block pageContent %}{% endblock %}
 {% endblock %}
 
 {% block bodyEnd %}

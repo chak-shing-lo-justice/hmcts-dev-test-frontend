@@ -1,0 +1,48 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "template.njk" %}
+
+
+{% block pageContent %}
+
+{{ govukBackLink({
+  text: "Back",
+  href: backHref
+}) }}
+
+<h1 class="govuk-heading-xl">Case number: {{ caseNumber }}</h1>
+
+<form method="POST" action="{{ CASE_ROUTE }}/?caseId={{ caseId }}&caseNameOrId={{ caseNameOrId }}">
+  {{ govukInput({
+    label: {
+      text: "Case title",
+      classes: "govuk-input--width-20"
+    },
+    id: "title",
+    name: "title",
+    value: title
+  }) }}
+
+  {{ govukTextarea({
+    name: "description",
+    id: "description",
+    label: {
+      text: "Case description",
+      classes: "govuk-label--l",
+      isPageHeading: false
+    },
+    hint: {
+      text: "Do not include personal or financial information, like your National Insurance number or credit card details"
+    },
+    value: description
+  }) }}
+
+  {{ govukButton({
+    text: "Save",
+    preventDoubleClick: true
+  }) }}
+</form>
+{% endblock %}

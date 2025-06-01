@@ -1,0 +1,37 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+
+{% extends "template.njk" %}
+
+{% block pageContent %}
+  <h1 class="govuk-heading-xl">Login</h1>
+
+  <form method="POST" action="{{ LOGIN_ROUTE }}?view={{ view }}&param={{ param }}">
+  {{ govukInput({
+    label: {
+      text: "User Name",
+      classes: "govuk-input--width-20"
+    },
+    id: "login-user-name",
+    name: "username"
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Password",
+      classes: "govuk-input--width-20"
+    },
+    id: "login-user-password",
+    name: "password"
+  }) }}
+
+  {{ govukButton({
+    text: "Login",
+    preventDoubleClick: true
+  }) }}
+
+  </form>
+
+
+{% endblock %}
