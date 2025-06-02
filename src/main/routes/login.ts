@@ -8,7 +8,7 @@ import { Application, Request, Response } from 'express';
 export const LOGIN_VIEW = 'login';
 
 export function toLoginPage(req: Request, res: Response): void  {
-  const redirectUrl = encodeURI(req.originalUrl);
+  const redirectUrl = encodeURIComponent(req.originalUrl);
   res.redirect(`${LOGIN_ROUTE}?redirect=${redirectUrl}`);
 }
 
@@ -44,7 +44,7 @@ export default function (app: Application): void {
         if (response.status === 200) {
           res.cookie('token', `${response.data}`);
           if (req.query.redirect) {
-            res.redirect(decodeURI(req.query.redirect as string));
+            res.redirect(decodeURIComponent(req.query.redirect as string));
           } else {
             await renderListView(req, res);
           }
