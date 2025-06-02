@@ -34,7 +34,6 @@ export default function (app: Application): void {
   app.post(LOGIN_ROUTE, async (req, res) => {
     let data = {};
     if (!req.body.username || !req.body.password) {
-      console.log('Empty username or password');
       data = { errorMsg: 'Cannot be empty', errHref: '#login-user-name' };
     } else {
       try {

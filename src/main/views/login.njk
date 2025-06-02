@@ -7,7 +7,7 @@
 {% block pageContent %}
   <h1 class="govuk-heading-xl">Login</h1>
 
-  <form method="POST" action="{{ LOGIN_ROUTE }}?view={{ view }}&param={{ param }}">
+  <form method="POST" action="{{ LOGIN_ROUTE }}?redirect={{ redirect }}">
   {{ govukInput({
     label: {
       text: "User Name",
