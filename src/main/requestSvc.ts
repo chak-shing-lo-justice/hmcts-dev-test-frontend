@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { Request } from 'express';
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:4000';
+export const BASE_URL = process.env.BASE_URL || 'http://localhost:4000';
+export const FRONT_BASE_URL = process.env.FRONT_BASE_URL || 'https://localhost:3100';
 
 export async function doGet(req:Request, url: string, data?: any, headers?: any): Promise<AxiosResponse> {
   const queryUrl = new URL(url, BASE_URL);

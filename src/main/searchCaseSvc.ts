@@ -54,5 +54,5 @@ export async function renderListView(req: Request, res: Response, errorMsg?: str
     }
   }
 
-  res.render(SEARCH_VIEW, { caseList: buildCaseList(caseList, searchString), errorMsg , SEARCH_ROUTE, CASE_ROUTE});
+  res.render(SEARCH_VIEW, { caseList: buildCaseList(caseList, searchString), errorMsg , SEARCH_ROUTE, CASE_ROUTE });
 }

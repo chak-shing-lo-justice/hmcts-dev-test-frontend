@@ -1,14 +1,15 @@
 import { LOGIN_ROUTE } from '../constant';
 import { doGet } from '../requestSvc';
+import { renderListView } from '../searchCaseSvc';
 
 import axios from 'axios';
-import { Application, Response } from 'express';
+import { Application, Request, Response } from 'express';
 
 export const LOGIN_VIEW = 'login';
 
-// Return true if not login and will to redirect to login page
-export function toLoginPage(res: Response, redirectView: string, data: any): void  {
-  res.render(LOGIN_VIEW, { view: redirectView, param:JSON.stringify(data) });
+export function toLoginPage(req: Request, res: Response): void  {
+  const redirectUrl = encodeURI(req.originalUrl);
+  res.redirect(`${LOGIN_ROUTE}?redirect=${redirectUrl}`);
 }
 
 export function requireLogin (redirectView: string, callback: (req: any, res: Response) => void | Promise<void>) {
@@ -16,12 +17,11 @@ export function requireLogin (redirectView: string, callback: (req: any, res: Re
     if (req?.cookies?.token) {
       await doGet(req, '/user/verify')
         .then(async () => callback(req, res))
-        .catch((err) => {
-          console.log(err);
-          toLoginPage(res, redirectView, req.query);
+        .catch(() => {
+          toLoginPage(req, res);
         });
     } else {
-      toLoginPage(res, redirectView, req.query);
+      toLoginPage(req, res);
     }
   };
 }
@@ -43,14 +43,10 @@ export default function (app: Application): void {
 
         if (response.status === 200) {
           res.cookie('token', `${response.data}`);
-          if (req.query.view) {
-            let param;
-            if (req.query.param) {
-              param = JSON.parse(req.query.param as string);
-            }
-            res.render(req.query.view as string, param);
+          if (req.query.redirect) {
+            res.redirect(decodeURI(req.query.redirect as string));
           } else {
-            res.render('list');
+            await renderListView(req, res);
           }
           return;
         } else {
@@ -61,6 +57,6 @@ export default function (app: Application): void {
       }
     }
 
-    res.render('login', { ...data, view: req.query.view, param: req.query.param, LOGIN_ROUTE });
+    res.render(LOGIN_VIEW, { ...data, view: req.query.view, param: req.query.param, LOGIN_ROUTE });
   });
 }
