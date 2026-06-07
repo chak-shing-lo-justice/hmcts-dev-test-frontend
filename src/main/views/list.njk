@@ -5,37 +5,40 @@
 {% extends "template.njk" %}
 
 {% block pageContent %}
-  <h1 class="govuk-heading-xl">Very Powerful Case Management System</h1>
+  <h1 class="govuk-heading-xl">Very Powerful Task Management System</h1>
 
   <form method="GET" action="{{ SEARCH_ROUTE }}">
   {{ govukInput({
     label: {
-      text: "Search case name or ID",
+      text: "Search task name or ID",
       classes: "govuk-input--width-20"
     },
     id: "search-box",
-    name: "caseNameOrId"
+    name: "taskNameOrId"
   }) }}
 
-  {{ govukButton({
-    text: "Search",
-    preventDoubleClick: true
-  }) }}
+    {{ govukButton({
+      text: "Search",
+      preventDoubleClick: true
+    }) }}
   </form>
 
   {{ govukTable({
-    caption: "Cases",
+    caption: "Tasks",
     captionClasses: "govuk-table__caption--l",
     firstCellIsHeader: true,
     head: [
       {
-        text: "Case Title"
+        text: "Task Title"
+      },
+      {
+        text: "Status"
       },
       {
         text: "Created Date"
       }
     ],
-    rows: caseList
+    rows: taskList
   }) }}
 
 {% endblock %}

@@ -1,9 +1,48 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/header/macro.njk" import govukHeader -%}
 
 {% extends "govuk/template.njk" %}
 
 {% block head %}
   {% include "webpack/css.njk" %}
+{% endblock %}
+
+{% block header %}
+  {% if isLoggedIn %}
+    {{ govukHeader({
+        serviceName: "Task Manager",
+        homepageUrl: "/",
+        navigation: [
+          {
+            text: "Home",
+            href: "/"
+          },
+          {
+            text: "Create task",
+            href: "/tasks?taskNameOrId="
+          },
+          {
+            text: "Logout",
+            href: "/logout"
+          }
+        ]
+    }) }}
+  {% else %}
+    {{ govukHeader({
+        serviceName: "Task Manager",
+        homepageUrl: "/",
+        navigation: [
+          {
+            text: "Home",
+            href: "/"
+          },
+          {
+            text: "Create task",
+            href: "/tasks?taskNameOrId="
+          }
+        ]
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block content %}

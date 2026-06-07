@@ -1,5 +1,5 @@
 import { SEARCH_ROUTE } from '../constant';
-import { renderListView } from '../searchCaseSvc';
+import { renderListView } from '../searchTaskSvc';
 
 import { requireLogin } from './login';
 

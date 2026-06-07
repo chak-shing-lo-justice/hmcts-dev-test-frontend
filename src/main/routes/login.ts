@@ -1,6 +1,5 @@
-import { LOGIN_ROUTE } from '../constant';
+import { LOGIN_ROUTE, SEARCH_ROUTE } from '../constant';
 import { doGet } from '../requestSvc';
-import { renderListView } from '../searchCaseSvc';
 
 import axios from 'axios';
 import { Application, Request, Response } from 'express';
@@ -16,7 +15,10 @@ export function requireLogin (redirectView: string, callback: (req: any, res: Re
   return async (req: any, res: Response) : Promise<void> => {
     if (req?.cookies?.token) {
       await doGet(req, '/user/verify')
-        .then(async () => callback(req, res))
+        .then(async () => {
+          req.query.isLoggedIn = true;
+          callback(req, res);
+        })
         .catch(() => {
           toLoginPage(req, res);
         });
@@ -45,7 +47,7 @@ export default function (app: Application): void {
           if (req.query.redirect) {
             res.redirect(decodeURIComponent(req.query.redirect as string));
           } else {
-            await renderListView(req, res);
+            res.redirect(SEARCH_ROUTE);
           }
           return;
         } else {

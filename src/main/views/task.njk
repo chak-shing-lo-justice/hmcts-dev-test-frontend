@@ -1,0 +1,97 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% extends "template.njk" %}
+
+
+{% block pageContent %}
+
+{{ govukBackLink({
+  text: "Back",
+  href: backHref
+}) }}
+
+<h1 class="govuk-heading-xl">
+{% if taskId %}
+Task id: {{ taskId }}
+{% else %}
+Create a new task
+{% endif %}
+</h1>
+
+<form method="POST" action="{{ TASK_ROUTE }}/?taskId={{ taskId }}&taskNameOrId={{taskNameOrId}}">
+  {{ govukInput({
+    label: {
+      text: "Task title",
+      classes: "govuk-input--width-20"
+    },
+    id: "title",
+    name: "title",
+    value: title
+  }) }}
+
+  {{ govukTextarea({
+    name: "description",
+    id: "description",
+    label: {
+      text: "Task description",
+      classes: "govuk-label--l",
+      isPageHeading: false
+    },
+    hint: {
+      text: "Do not include personal or financial information, like your National Insurance number or credit card details"
+    },
+    value: description
+  }) }}
+
+  {% if taskId %}
+    <label class="govuk-label govuk-label--l" for="description">Task status</label>
+    <div class="govuk-body">{{ status }}</div>
+
+    {% if status == 'Opened' %}
+     {{ govukRadios({
+        idPrefix: "status",
+        name: "status",
+        fieldset: {
+          legend: {
+            text: "Close task?",
+            classes: "govuk-fieldset__legend--l"
+          }
+        },
+        items: [
+          {
+            value: "Closed",
+            text: "Yes"
+          },
+          {
+            value: "Opened",
+            text: "No"
+          }
+        ],
+        value: 'Opened'
+      }) }}
+    {% endif %}
+  {% endif %}
+
+  {% if taskId %}
+    {{ govukButton({
+      text: "Save",
+      preventDoubleClick: true
+    }) }}
+  {% else %}
+    {{ govukButton({
+      text: "Create",
+      preventDoubleClick: true
+    }) }}
+  {% endif %}
+</form>
+
+{% if taskId %}
+  <div class="govuk-body">
+    <a href="{{ DELETE_TASK_ROUTE }}?taskId={{taskId}}&taskNameOrId={{taskNameOrId}}">Delete task</a>
+  </div>
+{% endif %}
+{% endblock %}

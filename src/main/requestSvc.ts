@@ -23,7 +23,7 @@ export async function doPut(req:Request, url: string, data: any, headers?: any):
   return axios.put(new URL(url, BASE_URL).toString(), data,  { headers: { ...headers, ...getAuthorizationHeader(req) } });
 }
 
-export async function doDelete(req:Request, url: string, data: any, headers?: any): Promise<AxiosResponse> {
+export async function doDelete(req:Request, url: string, data?: any, headers?: any): Promise<AxiosResponse> {
   return axios.delete(new URL(url, BASE_URL).toString(), { headers: { ...headers, ...getAuthorizationHeader(req) } });
 }
 
